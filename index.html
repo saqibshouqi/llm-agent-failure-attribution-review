@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <meta name="theme-color" content="#f7f9fc">
+  <meta name="description" content="Accepted ICAC 2026 systematic review by Saqib Shouqi and Yohan Abhishek on failure attribution and recovery in long-horizon LLM agents. Read the author-accepted manuscript and explore the research artifacts.">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Failure Attribution in Long-Horizon LLM Agents | Accepted Review · ICAC 2026">
+  <meta property="og:description" content="A systematic review, six-dimensional taxonomy, and research agenda for more reliable long-horizon LLM agents. Accepted at ICAC 2026; IEEE Xplore publication forthcoming.">
+  <meta name="robots" content="index, follow">
+  <title>Failure Attribution in Long-Horizon LLM Agents | Saqib Shouqi · ICAC 2026</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='15' fill='%23132940'/%3E%3Cpath d='M17 43 29 20l9 15 6-9 5 17' fill='none' stroke='%23b1d7fc' stroke-width='5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+  <style>
+    :root {
+      color-scheme: light;
+      --canvas: #f7f9fc;
+      --paper: #ffffff;
+      --navy: #152b42;
+      --ink: #1d3045;
+      --secondary: #4d6074;
+      --muted: #6c7d8d;
+      --blue: #1b5c91;
+      --blue-dark: #11456f;
+      --blue-light: #eaf3fa;
+      --line: #dce6ef;
+      --line-soft: #eaf0f5;
+      --shadow: 0 18px 64px rgba(27, 52, 82, .055);
+      --serif: Georgia, 'Times New Roman', serif;
+      --sans: 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Inter', Arial, sans-serif;
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-padding-top: 96px; }
+    body { margin: 0; color: var(--ink); background: var(--canvas); font-family: var(--sans); font-size: 16px; line-height: 1.65; -webkit-font-smoothing: antialiased; }
+    a { color: var(--blue); text-underline-offset: .18em; }
+    a:hover { color: var(--blue-dark); }
+    a:focus-visible, button:focus-visible, summary:focus-visible { outline: 3px solid #71b7ec; outline-offset: 4px; border-radius: 3px; }
+    button, a { -webkit-tap-highlight-color: transparent; }
+    button { font: inherit; }
+    .shell { width: min(1160px, calc(100% - 72px)); margin: auto; }
+    .site-header { border-bottom: 1px solid var(--line); background: rgba(247, 249, 252, .96); }
+    .header-inner { display: flex; justify-content: space-between; align-items: center; gap: 24px; min-height: 82px; }
+    .brand { display: flex; align-items: center; gap: 13px; color: var(--navy); text-decoration: none; line-height: 1.1; }
+    .brand-icon { flex: 0 0 36px; height: 36px; border-radius: 10px; background: var(--navy); color: white; display: grid; place-items: center; }
+    .brand-icon svg { width: 23px; height: 23px; }
+    .brand-name { display:block; font-size: 14px; letter-spacing: .01em; font-weight: 750; }
+    .brand-sub { display:block; color: var(--muted); font-size: 11px; letter-spacing: .095em; text-transform: uppercase; margin-top: 5px; font-weight: 650; }
+    .site-nav { display: flex; gap: 29px; align-items: center; }
+    .site-nav a { color: var(--secondary); font-size: 13px; font-weight: 670; text-decoration: none; transition: color .18s ease; }
+    .site-nav a:hover { color: var(--blue); }
+    .hero { display:grid; grid-template-columns: minmax(0, 1.6fr) minmax(280px, .9fr); gap: clamp(35px, 6vw, 84px); padding-top: 89px; padding-bottom: 92px; align-items: center; }
+    .eyebrow { display:flex; align-items:center; gap: 12px; margin: 0 0 25px; color: var(--blue); font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: .135em; }
+    .eyebrow::before { content: ''; display:block; width: 29px; height: 2px; background: #2c79ad; }
+    h1, h2, h3, p { margin-top: 0; }
+    h1 { font-family: var(--serif); font-weight: 500; font-size: clamp(39px, 4.5vw, 61px); letter-spacing: -.046em; line-height: 1.14; color: var(--navy); margin-bottom: 26px; }
+    h1 em { color: var(--blue); font-style: normal; }
+    .title-sub { display: block; font-family: var(--sans); font-size: clamp(20px, 2vw, 26px); letter-spacing: -.035em; font-weight: 480; line-height: 1.35; color: var(--secondary); margin-top: 17px; }
+    .hero-dek { max-width: 620px; font-size: 16px; color: var(--secondary); line-height: 1.8; margin-bottom: 24px; }
+    .status-line { display:flex; flex-wrap: wrap; align-items:center; gap: 11px; margin-bottom: 26px; }
+    .status { color: #155078; background: #e6f1f9; border: 1px solid #c9e0f1; display: inline-flex; align-items: center; gap: 9px; font-size: 12px; font-weight: 750; border-radius: 50px; padding: 7px 12px; }
+    .status-dot { width: 7px; height: 7px; border-radius: 100%; background: #2476a3; }
+    .status-context { color: var(--muted); font-size: 12.5px; }
+    .authors { display: flex; flex-wrap: wrap; column-gap: 25px; row-gap: 8px; margin: 0 0 32px; }
+    .author { color: var(--ink); font-size: 14px; font-weight: 680; }
+    .author + .author::before { content: '•'; color: #8a9aa9; margin-right: 25px; font-weight: 400; }
+    .actions { display: flex; flex-wrap: wrap; align-items:center; gap: 11px; }
+    .btn { display: inline-flex; justify-content: center; align-items: center; gap: 10px; min-height: 47px; border: 1px solid #c7d6e2; padding: 10px 16px; border-radius: 9px; background: #fff; text-decoration:none; color:var(--navy); font-size: 13px; font-weight: 740; line-height: 1.25; box-shadow: 0 2px 4px rgba(14, 44, 77, .025); transition: transform .17s, box-shadow .17s, background .17s, border-color .17s; cursor: pointer; }
+    .btn:hover { transform: translateY(-1px); color: var(--navy); box-shadow: 0 5px 16px rgba(14, 44, 77, .085); border-color: #a9c3d5; }
+    .btn-primary { background: var(--navy); color: white; border-color: var(--navy); }
+    .btn-primary:hover { background: var(--blue-dark); border-color: var(--blue-dark); color: white; }
+    .icon { width: 16px; height: 16px; flex: 0 0 16px; stroke-width: 1.75; }
+    .hero-note { margin: 14px 0 0; font-size: 12px; color: var(--muted); }
+    .snapshot { background: var(--paper); border: 1px solid var(--line); border-radius: 15px; box-shadow: var(--shadow); overflow: hidden; position: relative; }
+    .snapshot::before { content:''; display:block; height: 5px; background: linear-gradient(90deg, #184a77 0%, #609cc3 65%, #c3e4f0 100%); }
+    .snapshot-body { padding: 29px 31px 28px; }
+    .card-kicker { color: var(--muted); font-size: 11px; font-weight: 780; letter-spacing: .13em; text-transform: uppercase; margin-bottom: 19px; }
+    .snapshot-title { font-family: var(--serif); font-size: 27px; line-height: 1.24; letter-spacing: -.027em; color: var(--navy); font-weight: 500; margin-bottom: 25px; }
+    .data-row { display:flex; align-items:center; justify-content:space-between; gap: 13px; padding: 16px 0; border-top: 1px solid var(--line-soft); }
+    .data-row strong { font-family: var(--serif); font-size: 34px; letter-spacing: -.04em; color: var(--blue); font-weight: 500; line-height: 1; }
+    .data-row span { color: var(--secondary); font-size: 12.5px; text-align:right; max-width: 150px; line-height: 1.4; }
+    .snapshot-foot { background: #f3f7fa; padding: 16px 31px 20px; border-top: 1px solid var(--line); }
+    .snapshot-foot-label { font-size: 10px; text-transform:uppercase; letter-spacing: .115em; font-weight:800; color:#62768a; margin-bottom: 7px; }
+    .snapshot-foot p { font-size: 12px; color: var(--secondary); margin: 0; }
+    .section { border-top: 1px solid var(--line); padding: 69px 0 78px; }
+    .section-heading { display:flex; align-items:baseline; justify-content:space-between; gap: 24px; margin-bottom: 28px; }
+    .section-number { color: #6791b0; font-family: var(--serif); font-size: 15px; margin-right: 13px; }
+    h2 { color:var(--navy); font-family:var(--serif); font-weight: 500; font-size: clamp(29px, 3vw, 38px); letter-spacing: -.034em; line-height:1.2; margin-bottom: 0; }
+    .section-lead { color: var(--secondary); font-size: 15px; max-width: 600px; margin-bottom: 0; line-height: 1.8; }
+    .overview-grid { display:grid; grid-template-columns: 1.05fr .95fr; gap: 72px; align-items:start; }
+    .overview-highlight { font-family:var(--serif); color:var(--navy); font-size:clamp(24px, 2.6vw, 32px); line-height:1.37; letter-spacing:-.025em; margin-bottom: 20px; }
+    .overview-copy { color:var(--secondary); font-size: 15px; line-height:1.86; margin-bottom: 15px; }
+    .takeaway { background:#edf4fa; border-left: 3px solid #367ba9; border-radius: 0 10px 10px 0; padding: 22px 25px; }
+    .takeaway-label { color: var(--blue-dark); font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: .1em; margin-bottom: 9px; }
+    .takeaway p { margin:0; color: #294961; font-size:14px; line-height:1.8; }
+    .findings-grid { display:grid; grid-template-columns:repeat(3, 1fr); gap: 16px; }
+    .finding { background:#fff; border:1px solid var(--line); border-radius:12px; padding: 27px 26px 29px; min-height:248px; }
+    .finding-mark { font-family:var(--serif); color:var(--blue); font-size: 32px; line-height: 1; letter-spacing:-.045em; margin-bottom: 24px; }
+    .finding h3 { color:var(--navy); font-size: 16px; letter-spacing:-.015em; line-height:1.4; margin-bottom: 12px; font-weight: 760; }
+    .finding p { color:var(--secondary); font-size:13.5px; line-height:1.78; margin:0; }
+    .framework-intro { max-width: 740px; color:var(--secondary); font-size: 15px; line-height:1.83; margin-bottom: 34px; }
+    .steps { display:grid; grid-template-columns: repeat(4, 1fr); gap: 12px; position: relative; }
+    .step { background: #fff; border: 1px solid var(--line); padding: 25px 20px 28px; border-radius: 11px; min-height: 183px; }
+    .step-top { display:flex; justify-content:space-between; align-items:center; margin-bottom: 24px; }
+    .step-index { font-family:var(--serif); color:#6c98b7; font-size:23px; line-height: 1; }
+    .step-arrow { color:#a3b2c0; font-size: 19px; }
+    .step:last-child .step-arrow { visibility:hidden; }
+    .step h3 { color:var(--navy); font-size: 15px; margin-bottom:8px; letter-spacing:-.02em; }
+    .step p { color:var(--secondary); font-size:12.5px; line-height: 1.65; margin:0; }
+    .footnote { color:var(--muted); font-size:12px; margin: 18px 0 0; }
+    .details-grid { display:grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, .9fr); gap: 22px; align-items: stretch; }
+    .detail-card { background: #fff; border:1px solid var(--line); border-radius:12px; padding: 28px 30px; }
+    .detail-card h3 { font-size: 13px; font-weight: 760; color:var(--navy); margin-bottom: 20px; }
+    .detail-row { display:grid; grid-template-columns: 110px 1fr; gap:16px; padding: 11px 0; border-top:1px solid var(--line-soft); font-size:13px; }
+    .detail-row dt { color:var(--muted); }
+    .detail-row dd { margin:0; color:var(--ink); font-weight:550; }
+    .detail-row a { text-decoration:none; font-weight:650; }
+    .info-copy { font-size:13.5px; color:var(--secondary); line-height:1.8; margin:0 0 18px; }
+    .fineprint { border-top:1px solid var(--line-soft); padding-top:18px; color:var(--muted); font-size:12.5px; line-height:1.7; margin:0; }
+    .citation-card { background:#fff; border:1px solid var(--line); border-radius:12px; padding: 28px 30px 25px; }
+    .citation-card-label { font-size: 11px; font-weight: 800; color: var(--blue); letter-spacing:.12em; text-transform:uppercase; margin-bottom:13px; }
+    .citation-text { color:var(--ink); font-size: 14px; line-height: 1.92; margin:0 0 22px; }
+    .citation-actions { display:flex; align-items:center; gap:16px; flex-wrap:wrap; }
+    .copy-confirm { color: #216541; font-size: 12px; font-weight:700; opacity: 0; transition:opacity .15s; }
+    .copy-confirm.visible { opacity: 1; }
+    .site-footer { border-top: 1px solid var(--line); padding: 32px 0 48px; }
+    .footer-row { display:flex; justify-content:space-between; gap:30px; align-items:flex-start; }
+    .footer-title { font-size: 13px; font-weight: 780; color:var(--navy); margin-bottom: 4px; }
+    .footer-sub { font-size:12px; color:var(--muted); margin: 0; }
+    .copyright-notice { max-width:660px; font-size:11px; color:#758596; line-height:1.7; margin:0; }
+    @media (max-width: 1000px) {
+      .hero { gap:35px; grid-template-columns: 1.5fr .9fr; }
+      h1 { font-size: clamp(36px, 4.7vw, 48px); }
+      .snapshot-body { padding:26px 24px; }
+      .overview-grid { gap:32px; }
+    }
+    @media (max-width: 760px) {
+      .shell { width: min(100% - 40px, 620px); }
+      .header-inner { min-height: 73px; }
+      .site-nav { gap: 14px; }
+      .site-nav a { font-size: 12px; }
+      .site-nav a:nth-child(2), .site-nav a:nth-child(3) { display:none; }
+      .hero { display:flex; flex-direction:column; align-items:stretch; gap:43px; padding-top:64px; padding-bottom:61px; }
+      h1 { font-size:clamp(38px, 7vw, 53px); }
+      .snapshot { max-width: 520px; width:100%; }
+      .overview-grid, .details-grid { grid-template-columns:1fr; gap:24px; }
+      .findings-grid { grid-template-columns:1fr; gap:13px; }
+      .finding { min-height:0; padding: 25px; }
+      .finding-mark { margin-bottom: 15px; }
+      .steps { grid-template-columns:1fr 1fr; }
+      .step { min-height:0; }
+      .section { padding:57px 0 61px; }
+      .footer-row { display:block; }
+      .copyright-notice { margin-top:21px; }
+    }
+    @media (max-width: 440px) {
+      .shell { width:calc(100% - 34px); }
+      .site-nav a:nth-child(1) { display:none; }
+      .hero { padding-top:47px; }
+      h1 { font-size:37px; }
+      .title-sub { font-size:20px; }
+      .status-context { display:block; width:100%; }
+      .authors { gap:3px; flex-direction:column; }
+      .author + .author::before { content: none; }
+      .actions .btn { width:100%; }
+      .steps { grid-template-columns:1fr; }
+      .step-top { margin-bottom: 9px; }
+      .step { padding:20px; }
+      .detail-row { grid-template-columns: 1fr; gap:2px; }
+      .citation-card, .detail-card { padding:24px 20px; }
+    }
+    @media (prefers-reduced-motion:reduce) {
+      html { scroll-behavior:auto; }
+      *, *::before, *::after { transition-duration: .01ms !important; animation-duration:.01ms !important; }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="shell header-inner">
+      <a class="brand" href="#top" aria-label="Return to top of paper page">
+        <span class="brand-icon" aria-hidden="true">
+          <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M4 21 11.5 6l6.4 11L22 10l3 11" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </span>
+        <span><span class="brand-name">Saqib Shouqi</span><span class="brand-sub">Research publication</span></span>
+      </a>
+      <nav class="site-nav" aria-label="Page navigation">
+        <a href="#overview">Overview</a>
+        <a href="#findings">Contributions</a>
+        <a href="#framework">Framework</a>
+        <a href="#citation">Citation</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="shell hero" aria-labelledby="paper-title">
+      <div>
+        <p class="eyebrow">Systematic literature review · ICAC 2026</p>
+        <h1 id="paper-title">Toward Closing the Loop on <em>Failure Attribution</em> in Long-Horizon LLM Agents:<span class="title-sub">A Systematic Review, Taxonomy, and Research Agenda</span></h1>
+        <p class="hero-dek">Understanding why long-running AI agents fail, where their failures originate, and how they might recover without unnecessarily restarting completed work.</p>
+        <div class="status-line">
+          <span class="status"><span class="status-dot" aria-hidden="true"></span> Accepted · ICAC 2026</span>
+          <span class="status-context">IEEE Xplore publication forthcoming</span>
+        </div>
+        <div class="authors" aria-label="Paper authors">
+          <span class="author">Saqib Shouqi</span>
+          <span class="author">Yohan Abhishek</span>
+        </div>
+        <div class="actions">
+          <a class="btn btn-primary" href="accepted-manuscript.pdf" target="_blank" rel="noopener noreferrer" aria-label="Read author-accepted manuscript PDF in a new tab">
+            <svg class="icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><path d="M14 2v6h6M8 13h8M8 17h6"/></svg>
+            Read accepted manuscript
+          </a>
+          <a class="btn" href="https://github.com/saqibshouqi/llm-agent-recovery-review-artifacts" target="_blank" rel="noopener noreferrer" aria-label="Open research replication artifacts on GitHub in a new tab">
+            <svg class="icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18c-3 0-6-3-6-6a9 9 0 0 1 18 0c0 3-3 6-6 6"/><path d="M9 22v-4c-2-.5-3-2-3-4M15 22v-4c2-.5 3-2 3-4"/></svg>
+            Research artifacts
+            <svg class="icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9"/></svg>
+          </a>
+        </div>
+        <p class="hero-note">Author-prepared accepted manuscript · Not the IEEE version of record</p>
+      </div>
+
+      <aside class="snapshot" aria-label="Research snapshot">
+        <div class="snapshot-body">
+          <p class="card-kicker">Research at a glance</p>
+          <h2 class="snapshot-title">A structured view of the agent recovery problem.</h2>
+          <div class="data-row"><strong>68</strong><span>studies synthesized<br>(60 primary, 8 reviews)</span></div>
+          <div class="data-row"><strong>6</strong><span>dimensions in the proposed taxonomy</span></div>
+          <div class="data-row"><strong>4</strong><span>stages in the conceptual recovery loop</span></div>
+        </div>
+        <div class="snapshot-foot">
+          <div class="snapshot-foot-label">Research scope</div>
+          <p>LLM agents · Failure localization · Recovery &amp; reliability</p>
+        </div>
+      </aside>
+    </section>
+
+    <section class="section" id="overview" aria-labelledby="overview-heading">
+      <div class="shell">
+        <div class="section-heading"><h2 id="overview-heading"><span class="section-number">01 /</span> The research problem</h2></div>
+        <div class="overview-grid">
+          <div>
+            <p class="overview-highlight">When an AI agent fails partway through a long task, should it start over—or can it safely recover?</p>
+            <p class="overview-copy">Long-horizon LLM agents interact with tools, memory, and external environments. A failure in one step can propagate through subsequent actions, making it difficult to identify the true cause and safely preserve earlier work.</p>
+            <p class="overview-copy">This systematic review synthesizes 68 studies and examines how failure detection, causal localization, rollback, state and context restoration, repair, and evaluation could work together as a coherent recovery process.</p>
+          </div>
+          <aside class="takeaway">
+            <div class="takeaway-label">Central finding</div>
+            <p>Among the 60 primary studies reviewed, only <strong>two</strong> integrated localization, rollback/checkpointing, and repair/recovery under the study's coding criteria. None covered the complete recovery chain together with context handling, cost, and evaluation.</p>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="findings" aria-labelledby="findings-heading">
+      <div class="shell">
+        <div class="section-heading"><h2 id="findings-heading"><span class="section-number">02 /</span> Main contributions</h2></div>
+        <div class="findings-grid">
+          <article class="finding">
+            <div class="finding-mark">01</div>
+            <h3>Evidence map &amp; research gaps</h3>
+            <p>A systematic synthesis of 68 studies, with an analysis of how existing approaches connect failure localization, rollback, repair, context management, cost, and evaluation.</p>
+          </article>
+          <article class="finding">
+            <div class="finding-mark">02</div>
+            <h3>Six-dimensional taxonomy</h3>
+            <p>A classification spanning failure type, localization granularity, localization evidence, recovery strategy, state reversibility, and evaluation criteria.</p>
+          </article>
+          <article class="finding">
+            <div class="finding-mark">03</div>
+            <h3>Recovery decision framework</h3>
+            <p>A conceptual, reversibility-aware recovery loop and Break-Even Attribution Accuracy (BAA) construct to examine when targeted recovery may outperform safe restart.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="framework" aria-labelledby="framework-heading">
+      <div class="shell">
+        <div class="section-heading"><h2 id="framework-heading"><span class="section-number">03 /</span> Proposed recovery loop</h2></div>
+        <p class="framework-intro">The review proposes linking four reliability stages rather than treating error detection, attribution, and recovery as isolated mechanisms.</p>
+        <div class="steps" aria-label="Four stages of the proposed conceptual recovery framework">
+          <article class="step"><div class="step-top"><span class="step-index">01</span><span class="step-arrow" aria-hidden="true">→</span></div><h3>Observe</h3><p>Detect failed, invalid, or unsafe agent trajectories.</p></article>
+          <article class="step"><div class="step-top"><span class="step-index">02</span><span class="step-arrow" aria-hidden="true">→</span></div><h3>Diagnose</h3><p>Localize the cause and select a safe recovery boundary.</p></article>
+          <article class="step"><div class="step-top"><span class="step-index">03</span><span class="step-arrow" aria-hidden="true">→</span></div><h3>Recover</h3><p>Restore state and context, then repair or compensate as appropriate.</p></article>
+          <article class="step"><div class="step-top"><span class="step-index">04</span><span class="step-arrow" aria-hidden="true">✓</span></div><h3>Validate</h3><p>Re-execute and measure rescue success, cost, consistency, and safety.</p></article>
+        </div>
+        <p class="footnote">This is a conceptual research framework and evaluation agenda, not an empirically validated recovery system.</p>
+      </div>
+    </section>
+
+    <section class="section" id="details" aria-labelledby="details-heading">
+      <div class="shell">
+        <div class="section-heading"><h2 id="details-heading"><span class="section-number">04 /</span> Publication information</h2></div>
+        <div class="details-grid">
+          <div class="detail-card">
+            <h3>Manuscript details</h3>
+            <dl>
+              <div class="detail-row"><dt>Authors</dt><dd>Saqib Shouqi · Yohan Abhishek</dd></div>
+              <div class="detail-row"><dt>Affiliations</dt><dd>Informatics Institute of Technology, Sri Lanka · Robert Gordon University, United Kingdom</dd></div>
+              <div class="detail-row"><dt>Venue</dt><dd>International Conference on Advancements in Computing (ICAC 2026)</dd></div>
+              <div class="detail-row"><dt>Status</dt><dd>Accepted; IEEE Xplore publication forthcoming</dd></div>
+              <div class="detail-row"><dt>Conference</dt><dd><a href="https://icac.lk/" target="_blank" rel="noopener noreferrer">ICAC official website ↗</a></dd></div>
+            </dl>
+          </div>
+          <div class="detail-card">
+            <h3>Version &amp; availability</h3>
+            <p class="info-copy">The linked PDF is the author-prepared, camera-ready accepted manuscript submitted following peer review. It is <strong>not</strong> the final IEEE Xplore version of record.</p>
+            <p class="info-copy">The official IEEE Xplore citation and DOI will be added when the conference publication becomes available.</p>
+            <p class="fineprint">Manuscript sharing is subject to the authors' applicable IEEE copyright agreement and repository-posting terms.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="citation" aria-labelledby="citation-heading">
+      <div class="shell">
+        <div class="section-heading"><h2 id="citation-heading"><span class="section-number">05 /</span> Cite this work</h2></div>
+        <div class="citation-card">
+          <div class="citation-card-label">Accepted paper · Publication forthcoming</div>
+          <p id="citation-text" class="citation-text">S. Shouqi and Y. Abhishek, “Toward Closing the Loop on Failure Attribution in Long-Horizon LLM Agents: A Systematic Review, Taxonomy, and Research Agenda,” accepted at the International Conference on Advancements in Computing (ICAC), 2026. IEEE Xplore publication forthcoming.</p>
+          <div class="citation-actions">
+            <button id="copy-citation" class="btn" type="button" aria-describedby="copy-result">
+              <svg class="icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/></svg>
+              Copy citation
+            </button>
+            <span id="copy-result" class="copy-confirm" aria-live="polite" role="status"></span>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="shell footer-row">
+      <div>
+        <div class="footer-title">Saqib Shouqi · Research</div>
+        <p class="footer-sub">Author-maintained page · Updated 18 November 2026</p>
+      </div>
+      <p class="copyright-notice"><strong>IEEE copyright notice.</strong> © 2026 IEEE. Personal use of this material is permitted. Permission from IEEE must be obtained for all other uses, in any current or future media, including reprinting/republishing this material for advertising or promotional purposes, creating new collective works, for resale or redistribution to servers or lists, or reuse of any copyrighted component of this work in other works.</p>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      const button = document.getElementById('copy-citation');
+      const citation = document.getElementById('citation-text');
+      const result = document.getElementById('copy-result');
+      if (!button || !citation || !result) return;
+      button.addEventListener('click', async function () {
+        const value = citation.textContent.trim();
+        let copied = false;
+        try {
+          if (navigator.clipboard && window.isSecureContext) {
+            await navigator.clipboard.writeText(value);
+            copied = true;
+          } else {
+            const temporary = document.createElement('textarea');
+            temporary.value = value;
+            temporary.setAttribute('readonly', '');
+            temporary.style.position = 'fixed';
+            temporary.style.opacity = '0';
+            document.body.appendChild(temporary);
+            temporary.select();
+            copied = document.execCommand('copy');
+            temporary.remove();
+          }
+        } catch (error) { copied = false; }
+        result.textContent = copied ? 'Citation copied' : 'Please select and copy the citation above';
+        result.classList.add('visible');
+      });
+    })();
+  </script>
+</body>
+</html>
